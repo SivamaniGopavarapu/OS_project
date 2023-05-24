@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <title>FCFS Disk Scheduling Algorithm</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            padding: 20px;
+            background-color: skyblue;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 50px;
+            font-family: "Roboto";
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        #heading {
+            padding: 5px;
+
+        }
+
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #seek-sequence {
+            margin-top: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1><span id="heading">OS PROJECT</span></h1>
+    <h2><span id="heading">FCFS Disk Scheduling Algorithm</span></h2>
+    <script>
+        function FCFS(arr, head) {
+            let size = arr.length;
+            let seek_count = 0;
+            let distance, cur_track;
+
+            for (let i = 0; i < size; i++) {
+                cur_track = arr[i];
+                distance = Math.abs(cur_track - head);
+                seek_count += distance;
+                head = cur_track;
+            }
+
+            document.getElementById("output").innerHTML = "Total number of seek operations = " + seek_count;
+
+            let seekSequence = "<b>Seek Sequence is:</b><br>";
+            for (let i = 0; i < size; i++) {
+                seekSequence += arr[i] + "<br>";
+            }
+            document.getElementById("seek-sequence").innerHTML = seekSequence;
+        }
+
+        function runFCFS() {
+            let size = parseInt(document.getElementById("size").value);
+            let arr = [];
+            for (let i = 0; i < size; i++) {
+                arr.push(parseInt(document.getElementById("element_" + i).value));
+            }
+            let head = parseInt(document.getElementById("head").value);
+            FCFS(arr, head);
+        }
+    </script>
+    <div class="d-flex flex-column">
+        <label for="size">Enter the size of the request array:</label>
+
+        <input type="number" id="size"><br>
+
+        <div id="request_array"></div>
+
+        <label for="head">Enter the initial head position:</label>
+        <input type="number" id="head"><br>
+        <div class="d-flex flex-row justify-content-end">
+            <button onclick="runFCFS()" class="btn btn-secondary">Run</button>
+        </div>
+    </div>
+    <div id="output"></div>
+    <div id="seek-sequence"></div>
+
+    <script>
+        document.getElementById("size").addEventListener("input", function() {
+            let size = parseInt(this.value);
+            let requestArrayDiv = document.getElementById("request_array");
+            requestArrayDiv.innerHTML = "";
+            for (let i = 0; i < size; i++) {
+                let input = document.createElement("input");
+                input.type = "number";
+                input.id = "element_" + i;
+                input.placeholder = "Element " + (i + 1);
+                requestArrayDiv.appendChild(input);
+                requestArrayDiv.appendChild(document.createElement("br"));
+            }
+        });
+    </script>
+</body>
+
+</html>
